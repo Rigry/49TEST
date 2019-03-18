@@ -7,9 +7,11 @@ BUILD_DIR = build
 ######################################
 # source
 ######################################
-CPP_SOURCES_F0 = main.cpp
-LIBRARY_PATH = mculib3
+CPP_SOURCES_F0 = src/main.cpp
+LIBRARY_PATH = ../mculib3
 CMSIS_PATH = $(LIBRARY_PATH)/STM32F0_files
+
+BOOST_PATH = /usr/local/boost_1_62_0/
 
 ASM_SOURCES_F0 = $(CMSIS_PATH)/startup_stm32f030x6.s
 LDSCRIPT_F0 = $(CMSIS_PATH)/STM32F030K6Tx_FLASH.ld
