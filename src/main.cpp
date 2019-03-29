@@ -6,8 +6,9 @@
 #include "init_clock.h"
 #include "periph_rcc.h"
 #include "modbus_slave.h"
+#include "timers.h"
 
-extern "C" void init_clock() { init_clock<F_OSC,F_CPU>(); }
+extern "C" void init_clock() { init_clock<F_OSC, F_CPU>(); }
 
 using DI1  = mcu::PA9 ;  using DO1  = mcu::PB0 ;
 using DI2  = mcu::PA8 ;  using DO2  = mcu::PA7 ;
@@ -20,9 +21,9 @@ using DI8  = mcu::PB10;  using DO8  = mcu::PA15;
 using DI9  = mcu::PB2 ;
 using DI10 = mcu::PB1 ;
 
-using TX_slave  = mcu::PA9;
-using RX_slave  = mcu::PA10;
-using RTS_slave = mcu::PA8;
+using TX_slave  = mcu::PA2;
+using RX_slave  = mcu::PA3;
+using RTS_slave = mcu::PA1;
 
 
 int main()
@@ -89,7 +90,6 @@ int main()
       uint16_t factory_number;   // 1
       UART::Settings uart_set;   // 2
       uint16_t modbus_address;   // 3
-      bool     work_flags;       // 4
       Sense    input;            // 4
 
    }__attribute__((packed));
@@ -98,7 +98,28 @@ int main()
       make<mcu::Periph::USART1, TX_slave, RX_slave, RTS_slave>
          (flash.modbus_address, flash.uart_set);
 
+
+   slave.outRegs.device_code        = 7; // см ЭО-76
+   slave.outRegs.factory_number     = flash.factory_number;
+   slave.outRegs.uart_set           = flash.uart_set;
+   slave.outRegs.modbus_address     = flash.modbus_address;
+
+
+   // auto& uart = REF(USART1);
+   // like_CMSIS(uart).CR1 |= USART_CR1_RXNEIE_Msk;
+
+   
+   // auto& rts = Pin::make<RTS_slave, mcu::PinMode::Output>();
+   // rts = true;
+   // Timer timer {1000};
+   // Timer timer1 {10};
    while(1){
+
+      // if (timer1.event()){
+      //    like_CMSIS(uart).TDR = 1;
+      // }
+      // do4 = do1 ^= timer.event();
+      // do2 = do3 ^= timer1.event();
       // slave reaction
       slave ([&](uint16_t registrAddress) {
             static bool unblock = false;

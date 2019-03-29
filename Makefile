@@ -1,6 +1,6 @@
 TARGET_F0 = main
 DEBUG = 1
-OPT = -Os
+OPT = -O0
 CPPSTD =-std=c++17
 BUILD_DIR = build
 
@@ -8,7 +8,7 @@ BUILD_DIR = build
 # source
 ######################################
 CPP_SOURCES_F0 = src/main.cpp
-LIBRARY_PATH = ../mculib3
+LIBRARY_PATH = mculib3
 CMSIS_PATH = $(LIBRARY_PATH)/STM32F0_files
 
 BOOST_PATH = /usr/local/boost_1_62_0/
@@ -119,8 +119,8 @@ util:
 
 submodule:
 	git submodule update --init
-	cd mculib3/ && git fetch origin develop
-	cd mculib3/ && git checkout 90691948b83789b107f45ccbf0efb80dc14c8b93
+	cd mculib3/ && git fetch
+	cd mculib3/ && git checkout v1.00
   
 #######################################
 # dependencies
